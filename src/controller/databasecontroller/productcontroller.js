@@ -76,8 +76,8 @@ export const deleteproduct = async (req, res, next) => {
 
         // Delete car
         const { model, brand } = req.body;
-        const car = await Car.findOneAndDelete({ model, brand });
-        if (!car) {
+        const product = await Product.findOneAndDelete({ model, brand });
+        if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
         res.status(200).json({ message: 'Product deleted successfully' });
