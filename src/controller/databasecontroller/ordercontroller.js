@@ -1,42 +1,42 @@
 // src/controllers/carController.js
 import { body, validationResult } from 'express-validator';
-import Product from './../../model/product.js'; // path is correct
+import Order from './../../model/order.js'; // path is correct
 
-export const createproduct = async (req, res, next) => {
+export const createorder = async (req, res, next) => {
     try {
         // Validate input fields
         await body('model').isLength({ min: 2 }).withMessage('Model must be at least 2 characters long').run(req);
-        await body('brand').isLength({ min: 2 }).withMessage('Brand must be at least 2 characters long').run(req);
+        await body('orderid').isLength({ min: 2 }).withMessage('Brand must be at least 2 characters long').run(req);
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        // Create and save product
-        const { model, brand, price, stock  } = req.body;
-        const product = new Product({ model, brand, price, stock });
-        await product.save();
-        res.status(201).json({ message: 'Product registered successfully' });
+        // Create and save order
+        const { orderid ,stock , model  } = req.body;
+        const order = new Order({ orderid ,stock , model });
+        await order.save();
+        res.status(201).json({ message: 'Order registered successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Registration failed', message: error.message });
+        res.status(500).json({ error: 'order registration failed', message: error.message });
     }
 };
 
-export const getproduct = async (req, res, next) => {
+export const getorder = async (req, res, next) => {
     try {
-        const products = await Product.find();
-        res.status(200).json({ message: 'product retrieved successfully', products });
+        const orders = await Order.find();
+        res.status(200).json({ message: 'product retrieved successfully', orders });
     } catch (error) {
         next(error);
         res.status(500).json({ error: 'Failed to retrieve products', message: error.message });
     }
 };
 
-export const updateproduct = async (req, res, next) => {
+export const updateorder = async (req, res, next) => {
     try {
         // Validate input fields
-        await body('brand').isLength({ min: 2 }).withMessage('Brand must be at least 2 characters long').run(req);
+        await body('stock').isLength({ min: 2 }).withMessage('Brand must be at least 2 characters long').run(req);
         await body('model').isLength({ min: 2 }).withMessage('Model must be at least 2 characters long').run(req);
         await body('newmodel').isLength({ min: 2 }).withMessage('New model must be at least 2 characters long').run(req);
 
@@ -46,9 +46,9 @@ export const updateproduct = async (req, res, next) => {
         }
 
         // Update car
-        const { model, newmodel, brand } = req.body;
+        const { model, newmodel } = req.body;
         let product = await Product.findOneAndUpdate(
-            { model, brand },
+            { model, stock },
             { model: newmodel },
             { new: true }
         );
@@ -63,20 +63,20 @@ export const updateproduct = async (req, res, next) => {
     }
 };
 
-export const deleteproduct = async (req, res, next) => {
+export const deleteorder = async (req, res, next) => {
     try {
         // Validate input fields
-        await body('model').isLength({ min: 2 }).withMessage('Model must be at least 2 characters long').run(req);
-        await body('brand').isLength({ min: 2 }).withMessage('Brand must be at least 2 characters long').run(req);
+        await body('stock').isLength({ min: 2 }).withMessage('Model must be at least 2 characters long').run(req);
+        await body('model').isLength({ min: 2 }).withMessage('Brand must be at least 2 characters long').run(req);
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        // Delete car
-        const { model, brand } = req.body;
-        const product = await Product.findOneAndDelete({ model, brand });
+        // Delete order
+        const { stock, model } = req.body;
+        const product = await Product.findOneAndDelete({ stock, model });
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
@@ -86,7 +86,7 @@ export const deleteproduct = async (req, res, next) => {
     }
 };
 
-export const deleteproductbyId = async (req, res, next) => {
+export const deleteorderbyId = async (req, res, next) => {
     try {
         // Validate input fields
         await body('id').isLength({ min: 5 }).withMessage('ID must be at least 5 characters long').run(req);
