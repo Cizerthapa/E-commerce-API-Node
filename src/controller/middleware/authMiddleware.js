@@ -2,7 +2,6 @@
 import jwt from 'jsonwebtoken';
 
 function verifyToken(req, res, next) {
-    console.log('verifying Token');
     const token = req.headers['authorization']; // Correct header name
     if (!token) return res.status(401).json({ error: 'Access denied' });
 
@@ -10,7 +9,7 @@ function verifyToken(req, res, next) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
         req.userId = decoded.userId;
         next();
-        console.log('verifying Token Done');
+        console.log('verifying Ok!');
     } catch (error) {
         res.status(401).json({ error: 'Invalid token' });
     }

@@ -1,7 +1,7 @@
 // src/routes/carRoute.js
 import express from 'express';
-import { createproduct, getproduct, deleteproduct, deleteproductbyId, updateproduct } from '../controllers/databasecontroller/productcontroller.js';
-import verifyToken from './controller/middleware/authMiddleware.js';
+import { createproduct, getproduct, deleteproduct, deleteproductbyId, updateproduct } from './../../controller/databasecontroller/productcontroller.js';
+import verifyToken from './../../controller/middleware/authMiddleware.js';
 
 const router = express.Router();
 

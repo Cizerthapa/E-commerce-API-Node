@@ -1,6 +1,6 @@
 // src/controllers/carController.js
 import { body, validationResult } from 'express-validator';
-import Product from '../model/product.js'; // path is correct
+import Product from './../../model/product.js'; // path is correct
 
 export const createproduct = async (req, res, next) => {
     try {
